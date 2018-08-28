@@ -1,24 +1,35 @@
 package com.stylefeng.guns.core.common.constant.factory;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.core.common.constant.cache.Cache;
 import com.stylefeng.guns.core.common.constant.cache.CacheKey;
 import com.stylefeng.guns.core.common.constant.state.ManagerStatus;
 import com.stylefeng.guns.core.common.constant.state.MenuStatus;
-import com.stylefeng.guns.modular.system.dao.*;
-import com.stylefeng.guns.modular.system.model.*;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.support.StrKit;
 import com.stylefeng.guns.core.util.Convert;
 import com.stylefeng.guns.core.util.SpringContextHolder;
 import com.stylefeng.guns.core.util.ToolUtil;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.stylefeng.guns.modular.system.dao.DeptMapper;
+import com.stylefeng.guns.modular.system.dao.DictMapper;
+import com.stylefeng.guns.modular.system.dao.MenuMapper;
+import com.stylefeng.guns.modular.system.dao.NoticeMapper;
+import com.stylefeng.guns.modular.system.dao.RoleMapper;
+import com.stylefeng.guns.modular.system.dao.UserMapper;
+import com.stylefeng.guns.modular.system.model.Dept;
+import com.stylefeng.guns.modular.system.model.Dict;
+import com.stylefeng.guns.modular.system.model.Menu;
+import com.stylefeng.guns.modular.system.model.Notice;
+import com.stylefeng.guns.modular.system.model.Role;
+import com.stylefeng.guns.modular.system.model.User;
 
 /**
  * 常量的生产工厂
@@ -244,6 +255,26 @@ public class ConstantFactory implements IConstantFactory {
         }
     }
 
+    @Override
+    public String getDictsByCode(String code, Integer val) {
+        Dict temp = new Dict();
+        temp.setCode(code);
+        Dict dict = dictMapper.selectOne(temp);
+        if (dict == null) {
+            return "";
+        } else {
+            Wrapper<Dict> wrapper = new EntityWrapper<>();
+            wrapper = wrapper.eq("pid", dict.getId());
+            List<Dict> dicts = dictMapper.selectList(wrapper);
+            for (Dict item : dicts) {
+                if (item.getNum() != null && item.getNum().equals(val)) {
+                    return item.getName();
+                }
+            }
+            return "";
+        }
+    }
+
     /**
      * 获取性别名称
      */
@@ -305,7 +336,7 @@ public class ConstantFactory implements IConstantFactory {
 
         ArrayList<Integer> deptids = new ArrayList<>();
 
-        if(depts != null && depts.size() > 0){
+        if (depts != null && depts.size() > 0) {
             for (Dept dept : depts) {
                 deptids.add(dept.getId());
             }
@@ -328,6 +359,5 @@ public class ConstantFactory implements IConstantFactory {
         }
         return parentDeptIds;
     }
-
 
 }

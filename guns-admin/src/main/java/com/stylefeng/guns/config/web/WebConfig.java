@@ -1,16 +1,9 @@
 package com.stylefeng.guns.config.web;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.support.http.StatViewServlet;
-import com.alibaba.druid.support.http.WebStatFilter;
-import com.alibaba.druid.support.spring.stat.BeanTypeAutoProxyCreator;
-import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
-import com.google.code.kaptcha.impl.DefaultKaptcha;
-import com.google.code.kaptcha.util.Config;
-import com.stylefeng.guns.config.properties.GunsProperties;
-import com.stylefeng.guns.core.intercept.RestApiInteceptor;
-import com.stylefeng.guns.core.listener.ConfigListener;
-import com.stylefeng.guns.core.xss.XssFilter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.JdkRegexpMethodPointcut;
@@ -21,12 +14,23 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import java.util.Arrays;
-import java.util.Properties;
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.support.http.StatViewServlet;
+import com.alibaba.druid.support.http.WebStatFilter;
+import com.alibaba.druid.support.spring.stat.BeanTypeAutoProxyCreator;
+import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
+import com.google.code.kaptcha.impl.DefaultKaptcha;
+import com.google.code.kaptcha.util.Config;
+import com.stylefeng.guns.config.UserArgumentResolver;
+import com.stylefeng.guns.config.properties.GunsProperties;
+import com.stylefeng.guns.core.intercept.RestApiInteceptor;
+import com.stylefeng.guns.core.listener.ConfigListener;
+import com.stylefeng.guns.core.xss.XssFilter;
 
 /**
  * web 配置类
@@ -39,6 +43,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private GunsProperties gunsProperties;
+
+    @Autowired
+    private UserArgumentResolver userArgumentResolver;
 
     /**
      * 增加swagger的支持
@@ -59,6 +66,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new RestApiInteceptor()).addPathPatterns("/gunsApi/**");
     }
 
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(userArgumentResolver);
+    };
+
     /**
      * druidServlet注册
      */
@@ -75,12 +87,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public FilterRegistrationBean druidStatFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
-        //添加过滤规则.
+        // 添加过滤规则.
         filterRegistrationBean.addUrlPatterns("/*");
-        //添加不需要忽略的格式信息.
-        filterRegistrationBean.addInitParameter(
-                "exclusions", "/static/*,*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid,/druid/*");
-        //用于session监控页面的用户名显示 需要登录后主动将username注入到session里
+        // 添加不需要忽略的格式信息.
+        filterRegistrationBean.addInitParameter("exclusions",
+                "/static/*,*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid,/druid/*");
+        // 用于session监控页面的用户名显示 需要登录后主动将username注入到session里
         filterRegistrationBean.addInitParameter("principalSessionName", "username");
         return filterRegistrationBean;
     }
@@ -97,7 +109,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public JdkRegexpMethodPointcut druidStatPointcut() {
         JdkRegexpMethodPointcut druidStatPointcut = new JdkRegexpMethodPointcut();
         String patterns = "com.stylefeng.guns.modular.*.service.*";
-        //可以set多个
+        // 可以set多个
         druidStatPointcut.setPatterns(patterns);
         return druidStatPointcut;
     }

@@ -78,6 +78,8 @@ public interface IConstantFactory {
      */
     String getDictsByName(String name, Integer val);
 
+    String getDictsByCode(String code, Integer val);
+
     /**
      * 获取性别名称
      */

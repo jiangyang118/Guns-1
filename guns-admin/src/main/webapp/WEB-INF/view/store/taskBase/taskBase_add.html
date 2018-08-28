@@ -1,0 +1,42 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                            <#input id="beginDate" name="开始日期" underline="true"/>
+                            <#input id="endDate" name="结束日期" underline="true"/>
+                            <#input id="appointer" name="任命者"/>
+                </div>
+
+                <div class="col-sm-6">
+                            <#input id="assignee1" name="执法者1" underline="true"/>
+                            <#input id="assignee2" name="执法者2" underline="true"/>
+                            <#input id="store" name="被检查的店铺" underline="true"/>
+                            <#input id="sn" name="任务编号" underline="true"/>
+                            <#input id="status" name="任务状态：0-未检查；1-检查中；2-合格；3-不合格；4-基本合格" underline="true"/>
+                            <#input id="notiStatus" name="通知被检查店铺的状态：0-未通知；1-已通知" underline="true"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="TaskBaseInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="TaskBaseInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/store/taskBase/taskBase_info.js"></script>
+<script>
+    laydate.render({
+        elem: '#beginDate'
+    });
+    laydate.render({
+        elem: '#endDate'
+    });
+</script>
+@}

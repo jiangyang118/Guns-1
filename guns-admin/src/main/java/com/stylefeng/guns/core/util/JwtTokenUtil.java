@@ -9,7 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>jwt token工具类</p>
+ * <p>
+ * jwt token工具类
+ * </p>
+ * 
  * <pre>
  *     jwt的claim里一般包含以下几种数据:
  *         1. iss -- token的发行者
@@ -32,6 +35,10 @@ public class JwtTokenUtil {
      */
     public static String getUsernameFromToken(String token) {
         return getClaimFromToken(token).getSubject();
+    }
+
+    public static String getIdFromToken(String token) {
+        return getClaimFromToken(token).getId();
     }
 
     /**
@@ -66,10 +73,7 @@ public class JwtTokenUtil {
      * 获取jwt的payload部分
      */
     public static Claims getClaimFromToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(JwtConstants.SECRET)
-                .parseClaimsJws(token)
-                .getBody();
+        return Jwts.parser().setSigningKey(JwtConstants.SECRET).parseClaimsJws(token).getBody();
     }
 
     /**
@@ -109,13 +113,8 @@ public class JwtTokenUtil {
         final Date createdDate = new Date();
         final Date expirationDate = new Date(createdDate.getTime() + JwtConstants.EXPIRATION * 1000);
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(createdDate)
-                .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS512, JwtConstants.SECRET)
-                .compact();
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(createdDate)
+                .setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, JwtConstants.SECRET).compact();
     }
 
     /**
