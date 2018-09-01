@@ -85,15 +85,19 @@
 		</dependency>
 
 		<!--需要分布式session的话需要放开注释 -->
-		<!--<dependency> -->
-		<!--<groupId>org.springframework.session</groupId> -->
-		<!--<artifactId>spring-session-data-redis</artifactId> -->
-		<!--</dependency> -->
-		<!--<dependency> -->
-		<!--<groupId>org.springframework.boot</groupId> -->
-		<!--<artifactId>spring-boot-starter-data-redis</artifactId> -->
-		<!--</dependency> -->
-
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.github.penggle</groupId>
 			<artifactId>kaptcha</artifactId>

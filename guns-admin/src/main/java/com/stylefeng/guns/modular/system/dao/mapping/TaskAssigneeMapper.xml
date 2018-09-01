@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.system.dao.TaskAssigneeMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="com.stylefeng.guns.modular.system.model.TaskAssignee">
+		<id column="id" property="id" />
+		<result column="create_date" property="createDate" />
+		<result column="modify_date" property="modifyDate" />
+		<result column="version" property="version" />
+		<result column="assignee" property="assignee" />
+		<result column="task_id" property="taskId" />
+		<result column="receive_date" property="receiveDate" />
+		<result column="sign_date" property="signDate" />
+		<result column="receive" property="receive" />
+		<result column="withdrawal" property="withdrawal" />
+		<result column="assignee_sign" property="assigneeSign" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id, create_date, modify_date, version, assignee,
+		task_id,receive_date,sign_date,withdrawal,
+		receive,
+		assignee_sign
+	</sql>
+
+	<select id="selectAssignees"
+		resultType="com.stylefeng.guns.modular.system.dao.vo.TaskAssigneeVO">
+		select
+		tass.id as assigneeId,
+		user.name as assigneeName,
+		tass.receive,
+		tass.assignee_sign as assigneeSign,
+		tass.withdrawal
+		from
+		job_task_assignee as tass,
+		sys_user as user
+		where
+		tass.assignee =
+		user.id
+		<if test="task != null and task != ''">
+			and (tass.task_id = #{task})
+		</if>
+	</select>
+
+</mapper>

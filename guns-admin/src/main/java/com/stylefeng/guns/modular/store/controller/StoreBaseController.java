@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stylefeng.guns.core.base.controller.BaseController;
-import com.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.modular.store.service.IStoreBaseService;
-import com.stylefeng.guns.modular.store.vo.StoreVO;
+import com.stylefeng.guns.modular.system.dao.vo.StoreListVO;
 import com.stylefeng.guns.modular.system.model.StoreBase;
 
 /**
@@ -69,11 +68,10 @@ public class StoreBaseController extends BaseController {
     @ResponseBody
     public Object list(String condition) {
         List<StoreBase> list = storeBaseService.selectList(null);
-        List<StoreVO> stores = new ArrayList<>();
+        List<StoreListVO> stores = new ArrayList<>();
         for (StoreBase storeBase : list) {
-            StoreVO vo = new StoreVO();
+            StoreListVO vo = new StoreListVO();
             BeanUtils.copyProperties(storeBase, vo);
-            vo.setStoreTypeStr(ConstantFactory.me().getDictsByName("店铺类型", storeBase.getStoreType()));
             stores.add(vo);
         }
         return stores;

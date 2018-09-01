@@ -2,6 +2,9 @@ package com.stylefeng.guns.modular.system.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -26,7 +29,7 @@ public class StoreBase extends BaseEntity<StoreBase> {
     /**
      * 店铺门头名称
      */
-    private String name;
+    private String storeName;
     /**
      * 生产经营地址
      */
@@ -48,12 +51,12 @@ public class StoreBase extends BaseEntity<StoreBase> {
         this.storeType = storeType;
     }
 
-    public String getName() {
-        return name;
+    public String getStoreName() {
+        return storeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 
     public String getAddress() {
@@ -87,8 +90,6 @@ public class StoreBase extends BaseEntity<StoreBase> {
 
     @Override
     public String toString() {
-        return "StoreBase{" + "id=" + id + ", createDate=" + createDate + ", modifyDate=" + modifyDate + ", version="
-                + version + ", storeType=" + storeType + ", name=" + name + ", address=" + address + ", contact="
-                + contact + ", phone=" + phone + "}";
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

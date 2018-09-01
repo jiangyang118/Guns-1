@@ -1,5 +1,6 @@
 package com.stylefeng.guns.modular.store.service;
 
+import com.stylefeng.guns.modular.store.vo.TaskDetailVO;
 import com.stylefeng.guns.modular.system.model.TaskDetail;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -13,4 +14,9 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ITaskDetailService extends IService<TaskDetail> {
 
+    void save(TaskDetailVO vo);
+
+    boolean hasBaseTask(Integer taskId);
+
+    TaskDetail findByTaskId(Integer taskId);
 }

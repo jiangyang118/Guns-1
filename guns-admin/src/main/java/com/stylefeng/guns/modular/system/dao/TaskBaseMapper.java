@@ -1,7 +1,14 @@
 package com.stylefeng.guns.modular.system.dao;
 
-import com.stylefeng.guns.modular.system.model.TaskBase;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.stylefeng.guns.modular.system.dao.vo.TaskListVO;
+import com.stylefeng.guns.modular.system.dao.vo.TaskQueryVO;
+import com.stylefeng.guns.modular.system.model.TaskBase;
 
 /**
  * <p>
@@ -13,4 +20,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface TaskBaseMapper extends BaseMapper<TaskBase> {
 
+    List<TaskListVO> selectTasks(TaskQueryVO vo, @Param("page") Page<TaskListVO> page);
 }

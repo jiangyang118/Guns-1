@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 18080
 
 guns:
   swagger-open: true              #是否开启swagger (true/false)
@@ -25,6 +25,22 @@ spring:
     multipart:
       max-request-size: 100MB
       max-file-size: 100MB
+  redis:
+    database: 2
+    host: 39.107.154.186
+    port: 6379
+    password: a0fbaf04#a3b71
+    timeout: 1000
+    poolMaxTotal: 1000
+    poolMaxIdle: 50
+    poolMaxWait: 500
+    jedis:
+      pool:
+        max-wait: 1000ms
+        min-idle: 1
+        max-idle: 10
+        max-active: 1000
+    
 
 mybatis-plus:
   typeAliasesPackage: com.stylefeng.guns.modular.system.model

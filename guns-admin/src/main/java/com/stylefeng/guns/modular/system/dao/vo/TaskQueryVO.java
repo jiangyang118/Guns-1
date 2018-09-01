@@ -8,11 +8,13 @@
  * Date:2018年8月28日 上午11:21:01
  * 
  */
-package com.stylefeng.guns.modular.store.vo;
+package com.stylefeng.guns.modular.system.dao.vo;
 
 import java.io.Serializable;
 import java.util.List;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 /**
@@ -27,14 +29,15 @@ import lombok.Data;
  * @version 产品版本信息 yyyy-mm-dd 姓名(邮箱) 修改信息<br/>
  * 
  */
+@ApiModel("任务查询vo")
 @Data
 public class TaskQueryVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    /**
-     * 任务id
-     */
+    @ApiParam("任务id")
     private Integer id;
+    @ApiParam("任务查询类型， 0-查询任务指派者；1-查询任务接受者")
+    private Integer type;
     /**
      * 任务分配者
      */

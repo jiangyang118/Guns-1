@@ -2,6 +2,9 @@ package com.stylefeng.guns.modular.system.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -23,20 +26,13 @@ public class TaskDetail extends BaseEntity<TaskDetail> {
      */
     @TableField("task_id")
     private Integer taskId;
-    /**
-     * 是否回避，0-回避；1-不回避
-     */
-    private Integer withdrawal;
-    /**
-     * 执法者签名
-     */
-    @TableField("assignee_sign")
-    private String assigneeSign;
+
     /**
      * 被检查者签名
      */
     @TableField("store_sign")
     private String storeSign;
+
     /**
      * 检查项详情
      */
@@ -54,21 +50,6 @@ public class TaskDetail extends BaseEntity<TaskDetail> {
         this.taskId = taskId;
     }
 
-    public Integer getWithdrawal() {
-        return withdrawal;
-    }
-
-    public void setWithdrawal(Integer withdrawal) {
-        this.withdrawal = withdrawal;
-    }
-
-    public String getAssigneeSign() {
-        return assigneeSign;
-    }
-
-    public void setAssigneeSign(String assigneeSign) {
-        this.assigneeSign = assigneeSign;
-    }
 
     public String getStoreSign() {
         return storeSign;
@@ -101,8 +82,6 @@ public class TaskDetail extends BaseEntity<TaskDetail> {
 
     @Override
     public String toString() {
-        return "TaskDetail{" + "id=" + id + ", createDate=" + createDate + ", modifyDate=" + modifyDate + ", version="
-                + version + ", taskId=" + taskId + ", withdrawal=" + withdrawal + ", assigneeSign=" + assigneeSign
-                + ", storeSign=" + storeSign + ", item=" + item + ", memo=" + memo + "}";
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

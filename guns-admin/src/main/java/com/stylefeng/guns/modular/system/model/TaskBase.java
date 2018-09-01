@@ -3,6 +3,9 @@ package com.stylefeng.guns.modular.system.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -34,13 +37,9 @@ public class TaskBase extends BaseEntity<TaskBase> {
      */
     private Integer appointer;
     /**
-     * 执法者1
+     * 任务类型
      */
-    private Integer assignee1;
-    /**
-     * 执法者2
-     */
-    private Integer assignee2;
+    private Integer type;
     /**
      * 被检查的店铺
      */
@@ -58,6 +57,17 @@ public class TaskBase extends BaseEntity<TaskBase> {
      */
     @TableField("noti_status")
     private Integer notiStatus;
+
+    @TableField("inspec_date")
+    private Date inspectDate;
+    @TableField("inspec_done_date")
+    private Date inspectDoneDate;
+    /** 指派人数 */
+    private Integer assignee;
+    /** 接受任务人数 */
+    private Integer receive;
+    /** 拒绝任务人数 */
+    private int refuse;
 
     public Date getBeginDate() {
         return beginDate;
@@ -83,20 +93,12 @@ public class TaskBase extends BaseEntity<TaskBase> {
         this.appointer = appointer;
     }
 
-    public Integer getAssignee1() {
-        return assignee1;
+    public Integer getType() {
+        return type;
     }
 
-    public void setAssignee1(Integer assignee1) {
-        this.assignee1 = assignee1;
-    }
-
-    public Integer getAssignee2() {
-        return assignee2;
-    }
-
-    public void setAssignee2(Integer assignee2) {
-        this.assignee2 = assignee2;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getStore() {
@@ -105,6 +107,22 @@ public class TaskBase extends BaseEntity<TaskBase> {
 
     public void setStore(Integer store) {
         this.store = store;
+    }
+
+    public Date getInspectDoneDate() {
+        return inspectDoneDate;
+    }
+
+    public void setInspectDoneDate(Date inspectDoneDate) {
+        this.inspectDoneDate = inspectDoneDate;
+    }
+
+    public Date getInspectDate() {
+        return inspectDate;
+    }
+
+    public void setInspectDate(Date inspectDate) {
+        this.inspectDate = inspectDate;
     }
 
     public String getSn() {
@@ -136,11 +154,33 @@ public class TaskBase extends BaseEntity<TaskBase> {
         return this.id;
     }
 
+    public int getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(Integer assignee) {
+        this.assignee = assignee;
+    }
+
+    public int getReceive() {
+        return receive;
+    }
+
+    public void setReceive(Integer receive) {
+        this.receive = receive;
+    }
+
+    public int getRefuse() {
+        return refuse;
+    }
+
+    public void setRefuse(int refuse) {
+        this.refuse = refuse;
+    }
+
     @Override
     public String toString() {
-        return "TaskBase{" + "id=" + id + ", createDate=" + createDate + ", modifyDate=" + modifyDate + ", version="
-                + version + ", beginDate=" + beginDate + ", endDate=" + endDate + ", appointer=" + appointer
-                + ", assignee1=" + assignee1 + ", assignee2=" + assignee2 + ", store=" + store + ", sn=" + sn
-                + ", status=" + status + ", notiStatus=" + notiStatus + "}";
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
+
 }

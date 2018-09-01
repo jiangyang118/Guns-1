@@ -2,55 +2,6 @@
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- 系统后台管理员
--- ----------------------------
-DROP TABLE IF EXISTS `sys_admin`;
-CREATE TABLE `sys_admin` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  `modify_date` datetime NOT NULL COMMENT '修改日期',
-  `version` int(11) NOT NULL COMMENT '版本号',
-  `department` varchar(255) DEFAULT NULL COMMENT '部门',
-  `email` varchar(255) DEFAULT NULL COMMENT 'email',
-  `is_enabled` bit(1) NOT NULL COMMENT '是否可用，0-可用，1-不可用',
-  `is_locked` bit(1) NOT NULL COMMENT '是否锁定，0-锁定，1-没有锁定',
-  `lock_key` varchar(255) NOT NULL COMMENT '锁的key',
-  `locked_date` datetime DEFAULT NULL COMMENT '锁定日期',
-  `login_date` datetime DEFAULT NULL COMMENT '登录日期',
-  `login_failure_count` int(11) NOT NULL COMMENT '登录失败次数',
-  `mobile` varchar(255) DEFAULT NULL COMMENT '手机号',
-  `name` varchar(255) DEFAULT NULL COMMENT '姓名',
-  `password` varchar(255) NOT NULL COMMENT '密码',
-  `username` varchar(255) NOT NULL COMMENT '用户名',
-  `organization` int(11) DEFAULT NULL COMMENT '组织机构',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uni_admin_username` (`username`) USING BTREE,
-  KEY `FK_d9hesdejix49q0ayawccnhc60` (`organization`) USING BTREE,
-  CONSTRAINT `sys_admin_ibfk_1` FOREIGN KEY (`organization`) REFERENCES `sys_organization` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='系统后台管理员';
-
--- ----------------------------
--- 组织机构
--- ----------------------------
-DROP TABLE IF EXISTS `sys_organization`;
-CREATE TABLE `sys_organization` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  `modify_date` datetime NOT NULL COMMENT '修改日期',
-  `version` int(11) NOT NULL COMMENT '版本号',
-  `orders` int(11) DEFAULT NULL COMMENT '排序',
-  `grade` int(11) DEFAULT NULL COMMENT '等级',
-  `icon` varchar(255) DEFAULT NULL COMMENT '图标',
-  `name` varchar(255) DEFAULT NULL COMMENT '机构名称',
-  `tree_path` varchar(255) DEFAULT NULL COMMENT '树形结构',
-  `parent` int(11) DEFAULT NULL COMMENT '父节点',
-  PRIMARY KEY (`id`),
-  KEY `FK_kxj8p1ptqoy0yviop0027p3fj` (`parent`) USING BTREE,
-  CONSTRAINT `sys_organization_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `sys_organization` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='组织机构';
-
-
--- ----------------------------
 -- 店铺基本信息（包含餐饮商、供应商的店铺）
 -- ----------------------------
 DROP TABLE IF EXISTS `str_store_base`;
@@ -80,18 +31,33 @@ CREATE TABLE `job_task_base` (
   `begin_date` datetime DEFAULT NULL COMMENT '开始日期',
   `end_date` datetime  DEFAULT NULL COMMENT '结束日期',
   `appointer` int(11) NOT NULL  COMMENT '任命者',
-  `assignee1` int(11) NOT NULL  COMMENT '执法者1',
-  `assignee2` int(11) NOT NULL  COMMENT '执法者2',
   `store` int(11) NOT NULL  COMMENT '被检查的店铺',
   `sn` varchar(255) DEFAULT NULL COMMENT '任务编号',
+  `type` tinyint(2)   DEFAULT '0' NOT NULL COMMENT '任务类型',
   `status` tinyint(2)   DEFAULT '0' NOT NULL COMMENT '任务状态：0-未检查；1-检查中；2-合格；3-不合格；4-基本合格',
   `noti_status` tinyint(2)  DEFAULT '0' NOT NULL COMMENT '通知被检查店铺的状态：0-未通知；1-已通知',
   PRIMARY KEY (`id`),
   KEY `FK_appointer` (`appointer`) USING BTREE,
-  KEY `FK_assignee1` (`assignee1`) USING BTREE,
-  KEY `FK_assignee2` (`assignee2`) USING BTREE,
   KEY `FK_store` (`store`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='任务基本信息';
+
+-- ----------------------------
+-- 任务接受者
+-- ----------------------------
+DROP TABLE IF EXISTS `job_task_assignee`;
+CREATE TABLE `job_task_assignee` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `modify_date` datetime NOT NULL COMMENT '修改日期',
+  `version` int(11) NOT NULL COMMENT '版本号',
+  `assignee` int(11) NOT NULL COMMENT '任务执行者',
+  `task_id` int(11) NOT NULL  COMMENT '任务基本信息id',
+  `receive` tinyint(2) NOT NULL  DEFAULT '0' COMMENT '是否接收，0-未查看；1-已接受；2-未接受',
+  `assignee_sign` varchar(255) DEFAULT NULL COMMENT '执法者签名',
+  PRIMARY KEY (`id`),
+  KEY `FK_task_id` (`task_id`) USING BTREE,
+  KEY `FK_assignee` (`assignee`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT=' 任务接受者';
 
 -- ----------------------------
 -- 任务详细信息
@@ -104,7 +70,6 @@ CREATE TABLE `job_task_detail` (
   `version` int(11) NOT NULL COMMENT '版本号',
   `task_id` int(11) NOT NULL  COMMENT '任务基本信息id',
   `withdrawal` tinyint(2)   DEFAULT '0' NOT NULL COMMENT '是否回避，0-回避；1-不回避',
-  `assignee_sign` varchar(255) DEFAULT NULL COMMENT '执法者签名',
   `store_sign` varchar(255) DEFAULT NULL COMMENT '被检查者签名',
   `item` varchar(1000) DEFAULT NULL COMMENT '检查项详情',
   `memo` varchar(255) DEFAULT NULL COMMENT '备注',
@@ -121,6 +86,7 @@ CREATE TABLE `job_examine` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `modify_date` datetime NOT NULL COMMENT '修改日期',
   `version` int(11) NOT NULL COMMENT '版本号',
+  `type` tinyint(2)   DEFAULT '0' NOT NULL COMMENT '任务类型（检查类型）',
   `orders` int(11) NOT NULL DEFAULT 1 COMMENT '排序序号',
   `parent` int(11)  NULL  COMMENT '父节点',
   `code` varchar(255) DEFAULT NULL COMMENT '检查项的显示序号，例如1；1.1；1.2.1；',

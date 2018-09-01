@@ -1,0 +1,32 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                            <#input id="orders" name="排序序号"/>
+                             <#input id="parent" name="父节点" underline="true"/>
+                            <#input id="code" name="检查项的显示序号，例如1；1.1；1.2.1；" underline="true"/>
+                            
+                </div>
+
+                <div class="col-sm-6">
+                           <#input id="deprecate" name="是否废弃，0-不废弃；1-废弃" underline="true"/>
+                            <#input id="item" name="检查项每条详情内容" underline="true"/>
+                            <#input id="memo" name="备注" underline="true"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="ExamineInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="ExamineInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/store/examine/examine_info.js"></script>
+@}

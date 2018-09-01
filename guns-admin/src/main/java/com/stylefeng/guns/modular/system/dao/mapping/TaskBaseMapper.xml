@@ -12,21 +12,78 @@
 		<result column="begin_date" property="beginDate" />
 		<result column="end_date" property="endDate" />
 		<result column="appointer" property="appointer" />
-		<result column="assignee1" property="assignee1" />
-		<result column="assignee2" property="assignee2" />
+		<result column="type" property="type" />
 		<result column="store" property="store" />
 		<result column="sn" property="sn" />
 		<result column="status" property="status" />
 		<result column="noti_status" property="notiStatus" />
+		<result column="inspec_date" property="inspecDate" />
+		<result column="inspec_done_date" property="inspecDoneDate" />
+		<result column="assignee" property="assignee" />
+		<result column="receive" property="receive" />
+		<result column="refuse" property="refuse" />
 	</resultMap>
+
 
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
 		id, create_date, modify_date, version, begin_date,
 		end_date, appointer,
-		assignee1, assignee2, store, sn, status,
+		type, store, sn,
+		status,inspec_date,
+		inspec_done_date,assignee,receive,refuse,
 		noti_status
 	</sql>
 
 
+	<select id="selectTasks" resultType="com.stylefeng.guns.modular.system.dao.vo.TaskListVO"
+		parameterType="com.baomidou.mybatisplus.plugins.Page">
+		select
+		tbase.id as id,
+		tbase.create_date as createDate,
+		tbase.begin_date
+		as beginDate,
+		tbase.end_date as endDate,
+		user.name as name,
+		sstr.store_name as storeName,
+		sstr.address ,
+		sstr.contact ,
+		sstr.phone ,
+		tbase.type,
+		tbase.sn,
+		tbase.status ,
+		tbase.noti_status as notiStatus
+		from
+		job_task_base
+		as
+		tbase,
+		job_task_assignee as tass,
+		sys_user as user,
+		str_store_base as sstr
+		where
+		tbase.id = tass.task_id
+		and
+		tbase.appointer =
+		user.id
+		and
+		tbase.store = sstr.id
+		<if test="appointer != null and appointer != ''">
+			and (tbase.appointer = #{appointer})
+		</if>
+		<if test="assignee != null and assignee != ''">
+			and (tass.assignee = #{assignee})
+		</if>
+		<if test="store != null and store != ''">
+			and (tbase.store = #{store})
+		</if>
+		<if test="eqStatus != null and !eqStatus.isEmpty()  ">
+			and (tbase.status in  
+			<foreach collection="eqStatus" index="index" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+			)
+		</if>
+		GROUP BY tbase.id
+		order by tbase.create_date desc
+	</select>
 </mapper>

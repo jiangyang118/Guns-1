@@ -8,10 +8,11 @@
  * Date:2018年8月28日 上午11:21:12
  * 
  */
-package com.stylefeng.guns.modular.store.vo;
+package com.stylefeng.guns.modular.system.dao.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -47,19 +48,12 @@ public class TaskListVO implements Serializable {
     /**
      * 任命者
      */
-    private String appointerName;
-    /**
-     * 执法者1
-     */
-    private String assignee1Name;
-    /**
-     * 执法者2
-     */
-    private String assignee2Name;
+    private String name;
+
     /**
      * 店铺门头名称
      */
-    private String name;
+    private String storeName;
     /**
      * 生产经营地址
      */
@@ -86,4 +80,6 @@ public class TaskListVO implements Serializable {
      */
     private Integer notiStatus;
     private String notiStatusName;
+
+    private List<TaskAssigneeVO> assigneeVOs;
 }

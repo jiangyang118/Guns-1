@@ -4,8 +4,8 @@
  * 
  * Project Name:guns-admin
  * Package Name:com.stylefeng.guns.modular.store.vo
- * File Name:StoreVO.java
- * Date:2018年8月27日 下午2:20:08
+ * File Name:ExamineItemVO.java
+ * Date:2018年8月29日 上午11:37:04
  * 
  */
 package com.stylefeng.guns.modular.store.vo;
@@ -15,9 +15,9 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * ClassName: StoreVO <br/>
+ * ClassName: ExamineItemVO <br/>
  * Description: TODO <br/>
- * Date: 2018年8月27日 下午2:20:08 <br/>
+ * Date: 2018年8月29日 上午11:37:04 <br/>
  * <br/>
  * 
  * @author jiang(邮箱)
@@ -27,28 +27,24 @@ import lombok.Data;
  * 
  */
 @Data
-public class StoreVO implements Serializable {
+public class ExamineItemVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
     /**
-     * 店铺监管类型,0供应商,1餐饮商
+     * 排序序号
      */
-    private String storeTypeStr;
+    private Integer orders;
     /**
-     * 店铺门头名称
+     * 检查项的显示序号，例如1；1.1；1.2.1；
      */
-    private String name;
+    private String code;
     /**
-     * 生产经营地址
+     * 是否废弃，0-不废弃；1-废弃
      */
-    private String address;
+    private Integer deprecate;
     /**
-     * 联系人
+     * 检查项每条详情内容
      */
-    private String contact;
-    /**
-     * 店铺电话
-     */
-    private String phone;
+    private String item;
 }

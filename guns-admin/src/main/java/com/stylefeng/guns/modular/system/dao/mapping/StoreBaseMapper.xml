@@ -2,22 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.stylefeng.guns.modular.system.dao.StoreBaseMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.stylefeng.guns.modular.system.model.StoreBase">
-        <id column="id" property="id" />
-        <result column="create_date" property="createDate" />
-        <result column="modify_date" property="modifyDate" />
-        <result column="version" property="version" />
-        <result column="store_type" property="storeType" />
-        <result column="name" property="name" />
-        <result column="address" property="address" />
-        <result column="contact" property="contact" />
-        <result column="phone" property="phone" />
-    </resultMap>
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="com.stylefeng.guns.modular.system.model.StoreBase">
+		<id column="id" property="id" />
+		<result column="create_date" property="createDate" />
+		<result column="modify_date" property="modifyDate" />
+		<result column="version" property="version" />
+		<result column="store_type" property="storeType" />
+		<result column="store_name" property="storeName" />
+		<result column="address" property="address" />
+		<result column="contact" property="contact" />
+		<result column="phone" property="phone" />
+	</resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        id, create_date, modify_date, version, store_type, name, address, contact, phone
-    </sql>
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id, create_date, modify_date, version, store_type,
+		store_name,
+		address,
+		contact, phone
+	</sql>
 
+
+	<select id="selectStores"
+		resultType="com.stylefeng.guns.modular.system.dao.vo.StoreListVO"
+		parameterType="com.baomidou.mybatisplus.plugins.Page">
+		select
+		sstr.id,
+		sstr.create_date,
+		sstr.store_type as storeType,
+		sstr.store_name as storeName,
+		sstr.address,
+		sstr.contact,
+		sstr.phone
+		from
+		str_store_base as sstr
+		where 1=1
+		<if test="storeName != null and storeName != ''">
+			and (sstr.store_name like CONCAT('%',#{storeName},'%'))
+		</if>
+		<if test="storeType != null ">
+			and (sstr.assignee = #{storeType})
+		</if>
+		GROUP BY sstr.id
+		order by sstr.create_date desc
+	</select>
 </mapper>
