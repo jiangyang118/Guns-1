@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
+	<property name="LOG_HOME" value="${java.io.tmpdir}/../logs/" />
     <!--定义日志存放的位置-->
     <springProperty scope="context" name="gunsLogPath" source="log.path"
                     defaultValue="guns-logs"/>
@@ -87,7 +87,7 @@
             </encoder>
         </appender>
 
-        <root level="info">
+        <root level="debug">
             <appender-ref ref="FILE_ERROR"/>
             <appender-ref ref="FILE_ALL"/>
         </root>
