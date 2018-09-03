@@ -55,7 +55,7 @@ public class TaskQueryVO implements Serializable {
      */
     private String sn;
     /**
-     * 任务状态：0-未检查；1-检查中；2-合格；3-不合格；4-基本合格
+     * 任务状态：0-未检查；1-检查中；2-合格；3-不合格；4-基本合格；5-接受中；6-查询字段，等于0和5
      */
     private Integer status;
     /**

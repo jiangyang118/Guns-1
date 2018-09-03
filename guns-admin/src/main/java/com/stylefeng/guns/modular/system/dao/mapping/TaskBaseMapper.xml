@@ -73,6 +73,16 @@
 		<if test="assignee != null and assignee != ''">
 			and (tass.assignee = #{assignee})
 		</if>
+		<if test="status != null">
+			 <choose>
+		        <when test="status == 6">
+		            and (tbase.status = 0 or tbase.status = 5)
+		        </when>
+		        <otherwise>
+		           and (tbase.status = #{status})
+		        </otherwise>
+		    </choose>
+		</if>
 		<if test="store != null and store != ''">
 			and (tbase.store = #{store})
 		</if>
