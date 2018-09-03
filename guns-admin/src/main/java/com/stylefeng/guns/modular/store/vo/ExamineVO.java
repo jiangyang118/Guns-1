@@ -51,4 +51,5 @@ public class ExamineVO implements Serializable {
     private String item;
 
     private List<ExamineItemVO> list;
+
 }

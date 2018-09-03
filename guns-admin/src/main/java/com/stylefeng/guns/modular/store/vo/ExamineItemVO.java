@@ -47,4 +47,6 @@ public class ExamineItemVO implements Serializable {
      * 检查项每条详情内容
      */
     private String item;
+
+    private Integer key;
 }
